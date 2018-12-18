@@ -12,37 +12,45 @@ import java.util.Date;
 
 public class Block {
 
-	public String hash;
-	public String previousHash;
-	private String data; // Cualquier objeto
-	private long timeStamp;
-        private int nonce;
+    public String hash;
+    public String previousHash;
+    private String data; // Cualquier objeto
+    private long timeStamp;
+    private long nonce;
 
-	//Block Constructor.
-	public Block(String data,String previousHash ) {
-		this.data = data;
-		this.previousHash = previousHash;
-		this.timeStamp = new Date().getTime();
-                this.hash = calculateHash();
-	}
-        
-        public String calculateHash() {
-	String calculatedhash = StringUtil.applySha256( 
-			previousHash +
-			Long.toString(timeStamp) +
-			data 
-			);
-	return calculatedhash;
-        
-}
-        //PROOF OF WORK x ahora
-        public void mineBlock(int difficulty) {
-		String target = new String(new char[difficulty]).replace('\0', '0'); 
-		while(!hash.substring( 0, difficulty).equals(target)) {
-			nonce ++;
-			hash = calculateHash();
-		}
-		System.out.println("Block Mined!!! : " + hash);
-	}
+    //Block Constructor.
+    public Block(String data,String previousHash ) {
+        this.data = data;
+        this.previousHash = previousHash;
+        this.timeStamp = new Date().getTime();
+        this.nonce = (long)(Math.random() * Math.pow(2, 32));
+        this.hash = calculateHash();  
+    }
+
+    public String calculateHash() {
+        String calculatedhash = StringUtil.applySha256(
+                previousHash + timeStamp + data + nonce );
+        return calculatedhash;
+
+    }
+    
+    //PROOF OF WORK x ahora
+    public int mineBlock() {
+        int currentHashSize = StringUtil.stringSize(hash);
+        long start = System.currentTimeMillis();
+        long now = start;
+        while(now - start < 60000){
+            nonce++;
+            String tempHash = calculateHash();
+            int tempHashSize = StringUtil.stringSize(tempHash);
+            if(currentHashSize < tempHashSize){
+                currentHashSize = tempHashSize;
+                hash = tempHash;
+            }
+            now = System.currentTimeMillis();
+        }
+        System.out.println("Block Mined!\nHash: " + hash);
+        return currentHashSize;
+    }
         
 }
