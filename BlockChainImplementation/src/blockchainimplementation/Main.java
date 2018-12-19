@@ -18,7 +18,7 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Nodo n1 = new Nodo();
+        /*Nodo n1 = new Nodo();
         ArrayList<Block> blockchain = n1.getBlockchain();
         
         blockchain.add(new Block("Genesis", "0"));
@@ -38,5 +38,20 @@ public class Main {
 		String blockchainJson = new GsonBuilder().setPrettyPrinting().create().toJson(blockchain);
 		System.out.println("\nThe block chain: ");
 		System.out.println(blockchainJson);*/
+        Block block = new Block("Random Data", "3c8cedbbbb9fa2c9fd9d54cffb4cacacb6add90bebade437ccadd1e4bfee2faf"); //for demonstration purposes only
+        Block block2 = new Block("Random Data", "3c8cedbbbb9fa2c9fd9d54cffb4cacacb6add90bebade437ccadd1e4bfee2faf");
+        Block block3 = new Block("Random Data", "3c8cedbbbb9fa2c9fd9d54cffb4cacacb6add90bebade437ccadd1e4bfee2faf");
+        Block block4 = new Block("Random Data", "3c8cedbbbb9fa2c9fd9d54cffb4cacacb6add90bebade437ccadd1e4bfee2faf");
+        Block block5 = new Block("Random Data", "3c8cedbbbb9fa2c9fd9d54cffb4cacacb6add90bebade437ccadd1e4bfee2faf");
+        Test test = new Test(5);
+        test.addMiner(new BlockMiner(block));
+        test.addMiner(new BlockMiner(block2));
+        test.addMiner(new BlockMiner(block3));
+        test.addMiner(new BlockMiner(block4));
+        test.addMiner(new BlockMiner(block5));
+        test.run();
+        /*
+            Aqui hay un problema. bloque tiene 
+        */
     }
 }

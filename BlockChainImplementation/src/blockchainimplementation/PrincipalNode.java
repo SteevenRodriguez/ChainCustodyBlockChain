@@ -11,4 +11,7 @@ package blockchainimplementation;
  */
 public class PrincipalNode {
     
+    public int makeChallenge(){
+        return (int)(Math.random() * 5000 + 1000);
+    }
 }

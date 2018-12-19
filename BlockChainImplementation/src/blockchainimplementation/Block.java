@@ -34,7 +34,7 @@ public class Block {
 
     }
     
-    //PROOF OF WORK x ahora
+    //PROOF OF WORK
     public int mineBlock() {
         int currentHashSize = StringUtil.stringSize(hash);
         long start = System.currentTimeMillis();
@@ -49,7 +49,7 @@ public class Block {
             }
             now = System.currentTimeMillis();
         }
-        System.out.println("Block Mined!\nHash: " + hash);
+        System.out.println(String.format("Block Mined!\nHash: %s\nHash Size: %d", hash, currentHashSize));
         return currentHashSize;
     }
         
