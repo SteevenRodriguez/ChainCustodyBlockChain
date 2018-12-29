@@ -34,7 +34,7 @@ public class Test {
     
     public void run(){
         for(BlockMiner miner: miners){
-            new Thread(miner).start();
+            miner.start();
         }
     }
 }

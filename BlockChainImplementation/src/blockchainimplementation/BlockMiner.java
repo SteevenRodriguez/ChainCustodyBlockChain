@@ -9,7 +9,7 @@ package blockchainimplementation;
  *
  * @author johnny
  */
-public class BlockMiner implements Runnable{
+public class BlockMiner extends Thread{
     private Block block;
     
     public BlockMiner(Block block){
