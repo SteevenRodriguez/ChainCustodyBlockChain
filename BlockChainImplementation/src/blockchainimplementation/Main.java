@@ -16,15 +16,15 @@ public class Main {
      */
     public static void main(String[] args) throws InterruptedException, 
             IOException {
-        
+        /*
         Random ran = new Random();
         FileWriter fw = new FileWriter("results.csv", true);
         PrintWriter pw = new PrintWriter(fw);
         
-        for (int i=1; i<=50; i++) {      
+        for (int i = 1; i <= 50; i++) {      
             int nBlocks = 3 + ran.nextInt(10-3+1);
             Block[] blocks = new Block[nBlocks];
-            for (int x=0; x<nBlocks; x++)
+            for (int x = 0; x < nBlocks; x++)
                 blocks[x] = new Block("Random Data", "3c8cedbbbb9fa2c9fd9d54cffb4cacacb6add90bebade437ccadd1e4bfee2faf");
             Test test = new Test(nBlocks);
             for (Block block : blocks)
@@ -35,9 +35,11 @@ public class Main {
                 blockMiner.join();
             long stop = System.currentTimeMillis();
             pw.println(String.format("%d,%d", nBlocks, stop-start));
-        }
-        pw.close();
-        fw.close();
+        }*/
+        Test test = new Test(5, "Random Data", "3c8cedbbbb9fa2c9fd9d54cffb4cacacb6add90bebade437ccadd1e4bfee2faf");
+        test.runTest();
+       // pw.close();
+        //fw.close();
         
 //        Block block = new Block("Random Data", "3c8cedbbbb9fa2c9fd9d54cffb4cacacb6add90bebade437ccadd1e4bfee2faf"); //for demonstration purposes only
 //        Block block2 = new Block("Random Data", "3c8cedbbbb9fa2c9fd9d54cffb4cacacb6add90bebade437ccadd1e4bfee2faf");

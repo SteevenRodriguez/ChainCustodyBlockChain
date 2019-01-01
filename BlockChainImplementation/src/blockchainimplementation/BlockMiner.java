@@ -9,8 +9,12 @@ package blockchainimplementation;
  *
  * @author johnny
  */
-public class BlockMiner extends Thread{
+public class BlockMiner implements Runnable{
     private Block block;
+    
+    public BlockMiner(){
+        
+    }
     
     public BlockMiner(Block block){
         this.block = block;
@@ -19,6 +23,12 @@ public class BlockMiner extends Thread{
     public void setBlock(Block block){
         this.block = block;
     }
+
+    public Block getBlock() {
+        return block;
+    }
+    
+    
 
     @Override
     public void run() {

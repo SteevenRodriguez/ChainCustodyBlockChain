@@ -10,20 +10,39 @@ package blockchainimplementation;
  * @author johnny
  */
 public class Test {
-    private BlockMiner[] miners;
-    private int index;
+    private int numNodes;
+    private String data;
+    private String prevHash;
+    private Network network;
     
-    public Test(int blocks){
-        miners = new BlockMiner[blocks];
+    public Test(int numNodes, String data, String previousHash){
+        this.numNodes = numNodes;
+        this.data = data;
+        prevHash = previousHash;
     }
     
-    /*private final void init(){
-        for(int i =0; i < miners.length; i++){
-            
-            miners[i] = new BlockMiner();
+    public void runTest(){
+        prepare();
+        network.init(data, prevHash);
+    }
+    
+    /*public final void init(String data, String previousHash, long challenge){
+        for(int i = 0; i < miners.length; i++){  
+            miners[i] = new Nodo();
+            miners[i].setMiningBlock(new Block(data, previousHash, challenge));
         }
     }*/
     
+    private void prepare(){
+        Nodo[] nodes = new Nodo[numNodes];
+        for(int i = 0; i < nodes.length; i++){
+            nodes[i] = new Nodo();
+        }
+        PrincipalNode pNode = new PrincipalNode(nodes);
+        network = new Network(pNode, nodes);
+        
+    }
+    /*
     public BlockMiner[] getMiners(){
         return miners;
     }
@@ -34,7 +53,7 @@ public class Test {
     
     public void run(){
         for(BlockMiner miner: miners){
-            miner.start();
+            new Thread(miner).start();
         }
-    }
+    }*/
 }

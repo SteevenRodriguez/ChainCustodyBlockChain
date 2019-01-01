@@ -16,31 +16,48 @@ public class Block {
     public String previousHash;
     private String data; // Cualquier objeto
     private long timeStamp;
+    private long masterNonce;
     private long nonce;
 
     //Block Constructor.
-    public Block(String data,String previousHash ) {
+    public Block(String data, String previousHash, long masterNonce) {
         this.data = data;
         this.previousHash = previousHash;
         this.timeStamp = new Date().getTime();
         this.nonce = (long)(Math.random() * Math.pow(2, 32));
-        this.hash = calculateHash();  
+        this.masterNonce = masterNonce;
+        this.hash = calculateHash();
     }
 
     public String calculateHash() {
         String calculatedhash = StringUtil.applySha256(
-                previousHash + timeStamp + data + nonce );
+                previousHash + timeStamp + data + masterNonce + nonce);
         return calculatedhash;
 
     }
+
+    public String getHash() {
+        return hash;
+    }
+
+    public void setHash(String hash) {
+        this.hash = hash;
+    }
+
+    public long getNonce() {
+        return nonce;
+    }
+
+    public void setNonce(long nonce) {
+        this.nonce = nonce;
+    }
     
-    //PROOF OF WORK
     public int mineBlock() {
         int currentHashSize = StringUtil.stringSize(hash);
         long start = System.currentTimeMillis();
         long now = start;
         while(now - start < 60000){
-            nonce++;
+            ++nonce;
             String tempHash = calculateHash();
             int tempHashSize = StringUtil.stringSize(tempHash);
             if(currentHashSize < tempHashSize){

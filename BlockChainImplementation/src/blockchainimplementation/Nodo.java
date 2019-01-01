@@ -12,10 +12,12 @@ import java.util.ArrayList;
  * @author johnny
  */
 public class Nodo {
+    private BlockMiner miner;
     private ArrayList<Block> blockchain;
     
     public Nodo(){
         blockchain = new ArrayList<>();
+        miner = new BlockMiner();
     }
     
     public boolean isChainValid() {
@@ -43,4 +45,23 @@ public class Nodo {
     public ArrayList<Block> getBlockchain(){
         return blockchain;
     }
+    public void setMiningBlock(Block block){
+        miner.setBlock(block);
+    }
+
+    public BlockMiner getMiner() {
+        return miner;
+    }
+    
+    public void receiveWinner(Block winner){
+        if(winner.calculateHash().equals(winner.hash)){
+            //not altered
+            blockchain.add(winner);
+        }
+    }
+    
+    public Thread mineBlockThread(){
+        return new Thread(miner);
+    }
+    
 }
