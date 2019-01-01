@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class Nodo {
     private BlockMiner miner;
     private ArrayList<Block> blockchain;
-    private int challenge;
+    public long challenge;
     
     public Nodo(){
         blockchain = new ArrayList<>();
@@ -47,7 +47,8 @@ public class Nodo {
         return blockchain;
     }
     public void setMiningBlock(Block block){
-        challenge = StringUtil.stringSize(block.hash);
+        challenge = block.getMasterNonce();
+        
         miner.setBlock(block);
     }
 
@@ -57,8 +58,7 @@ public class Nodo {
     
     public void receiveWinner(Block winner){
         int winnerSize = StringUtil.stringSize(winner.hash);
-        if(winner.calculateHash().equals(winner.hash) &&
-                winnerSize > challenge){
+        if(winnerSize > challenge){
             //not altered
             blockchain.add(winner);
         }

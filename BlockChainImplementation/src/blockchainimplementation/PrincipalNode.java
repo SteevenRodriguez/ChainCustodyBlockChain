@@ -12,16 +12,18 @@ package blockchainimplementation;
  */
 public class PrincipalNode {
     private Nodo[] nodes;
-    
+    private static int MIN = 5300;
+    private static int MAX = 5600;
     public PrincipalNode(Nodo[] nodes){
         this.nodes = nodes;
     }
     private long makeChallenge(){
-        return (long)(Math.random() * 5000 + 1000);
+        return (long)(Math.random() * (MAX - MIN) + MIN);
     }
     
     public void sendBlock(String data, String previousHash){
         long challenge = makeChallenge();
+        System.out.println("Challenge is: " + challenge);
         for(Nodo node: nodes){
             Block b = new Block(data, previousHash, challenge);
             node.setMiningBlock(b);
@@ -29,15 +31,23 @@ public class PrincipalNode {
     }
     
     public Block decideWinner(){
-        Block winner = nodes[0].getMiner().getBlock();
+        Block winner = null;
+        Block max = nodes[0].getMiner().getBlock();
+        int maxSize = 0;
         for(int i = 1; i < nodes.length; i++){
             Block b = nodes[i].getMiner().getBlock();
-            int winnerSize = StringUtil.stringSize(winner.hash);
             int bSize = StringUtil.stringSize(b.hash);
-            if(bSize > winnerSize)
-                winner = b;
+            maxSize = StringUtil.stringSize(max.hash);
+            if(bSize > maxSize){
+                max = b;
+                maxSize = bSize;
+            }
+        }//found max value
+        System.out.println("max size is: " + maxSize);
+        if(maxSize > nodes[0].challenge){
+            winner = max;
+            System.out.println("Winner is: " + winner.hash);
         }
-        System.out.println("Winner is: " + winner.hash);
         return winner;
     }
 }

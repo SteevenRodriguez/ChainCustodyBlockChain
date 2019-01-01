@@ -29,6 +29,12 @@ public class Network {
         waitThreads();
         
         Block b = pNode.decideWinner();
+        while(b == null){
+            prepareThreads();
+            startThreads();
+            waitThreads();
+            b = pNode.decideWinner();
+        }
         for(Nodo node: nodes){
             node.receiveWinner(b);
         }

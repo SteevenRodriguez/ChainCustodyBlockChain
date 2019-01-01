@@ -24,11 +24,18 @@ public class Block {
         this.data = data;
         this.previousHash = previousHash;
         this.timeStamp = new Date().getTime();
-        this.nonce = (long)(Math.random() * Math.pow(2, 32));
+        this.nonce = (long)(Math.random() * Math.pow(2, 15));
         this.masterNonce = masterNonce;
-        this.hash = calculateHash();
+        this.hash = calculateHash(nonce);
     }
 
+    public String calculateHash(long nonce) {
+        String calculatedhash = StringUtil.applySha256(
+                previousHash + timeStamp + data + masterNonce + nonce);
+        return calculatedhash;
+
+    }
+    
     public String calculateHash() {
         String calculatedhash = StringUtil.applySha256(
                 previousHash + timeStamp + data + masterNonce + nonce);
@@ -51,18 +58,24 @@ public class Block {
     public void setNonce(long nonce) {
         this.nonce = nonce;
     }
+
+    public long getMasterNonce() {
+        return masterNonce;
+    }
     
     public int mineBlock() {
         int currentHashSize = StringUtil.stringSize(hash);
         long start = System.currentTimeMillis();
         long now = start;
+        long tempNonce = nonce;
         while(now - start < 60000){
-            ++nonce;
-            String tempHash = calculateHash();
+            tempNonce++;        
+            String tempHash = calculateHash(tempNonce);
             int tempHashSize = StringUtil.stringSize(tempHash);
             if(currentHashSize < tempHashSize){
                 currentHashSize = tempHashSize;
                 hash = tempHash;
+                nonce = tempNonce;
             }
             now = System.currentTimeMillis();
         }
