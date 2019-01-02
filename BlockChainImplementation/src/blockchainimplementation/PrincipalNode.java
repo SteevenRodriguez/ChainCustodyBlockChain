@@ -13,7 +13,7 @@ package blockchainimplementation;
 public class PrincipalNode {
     private Nodo[] nodes;
     private static int MIN = 5300;
-    private static int MAX = 5600;
+    private static int MAX = 5500;
     public PrincipalNode(Nodo[] nodes){
         this.nodes = nodes;
     }

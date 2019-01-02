@@ -18,13 +18,15 @@ public class Block {
     private long timeStamp;
     private long masterNonce;
     private long nonce;
-
+    
+    private static int MIN = 1;
+    private static int MAX = 1000000;
     //Block Constructor.
     public Block(String data, String previousHash, long masterNonce) {
         this.data = data;
         this.previousHash = previousHash;
         this.timeStamp = new Date().getTime();
-        this.nonce = (long)(Math.random() * Math.pow(2, 15));
+        this.nonce = (long)(Math.random()* (MAX - MIN) + MIN);
         this.masterNonce = masterNonce;
         this.hash = calculateHash(nonce);
     }

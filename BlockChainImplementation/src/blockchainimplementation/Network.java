@@ -5,6 +5,10 @@
  */
 package blockchainimplementation;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+
 /**
  *
  * @author johnny
@@ -20,16 +24,19 @@ public class Network {
         threads = new Thread[nodes.length];
     }
     
-    public void init(String data, String previousHash){
+    public void init(String data, String previousHash) throws IOException{
         pNode.sendBlock(data, previousHash);
-        
+        FileWriter fw = new FileWriter("results2.csv", true);
+        PrintWriter pw = new PrintWriter(fw);
         prepareThreads();
         long start = System.currentTimeMillis();
         startThreads();
         waitThreads();
         
         Block b = pNode.decideWinner();
+        int tries = 1;
         while(b == null){
+            tries++;
             prepareThreads();
             startThreads();
             waitThreads();
@@ -40,6 +47,9 @@ public class Network {
         }
         long end = System.currentTimeMillis();
         System.out.println("Tiempo pasado: " + (end-start));
+        pw.println(String.format("%d,%d", nodes.length, tries));
+        pw.close();
+        fw.close();
     }
     
     private void prepareThreads(){

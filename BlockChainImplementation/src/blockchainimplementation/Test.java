@@ -5,6 +5,8 @@
  */
 package blockchainimplementation;
 
+import java.io.IOException;
+
 /**
  *
  * @author johnny
@@ -21,7 +23,7 @@ public class Test {
         prevHash = previousHash;
     }
     
-    public void runTest(){
+    public void runTest() throws IOException{
         prepare();
         network.init(data, prevHash);
     }
