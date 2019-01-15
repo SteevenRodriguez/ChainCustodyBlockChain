@@ -35,7 +35,7 @@ public class Network {
         
         Nodo b = pNode.decideWinner();
         int tries = 1;
-        while(b == null){
+        while(b == null && tries < 10){
             tries++;
             prepareThreads();
             startThreads();

@@ -75,7 +75,6 @@ public class Block {
         BigInteger one = new BigInteger("1");
         BigInteger currentHashSize = StringUtil.stringSize(hash);
         BigInteger tempHashSize;
-        int vecesSupera = 0;
         long start = System.currentTimeMillis();
         long now = start;
         BigInteger tempNonce = nonce;
