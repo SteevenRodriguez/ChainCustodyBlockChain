@@ -5,6 +5,8 @@
  */
 package blockchainimplementation;
 
+import java.math.BigInteger;
+
 
 /**
  *
@@ -17,37 +19,40 @@ public class PrincipalNode {
     public PrincipalNode(Nodo[] nodes){
         this.nodes = nodes;
     }
-    private long makeChallenge(){
-        return (long)(Math.random() * (MAX - MIN) + MIN);
+    private BigInteger makeChallenge(){
+        
+        return StringUtil.random();
     }
     
     public void sendBlock(String data, String previousHash){
-        long challenge = makeChallenge();
-        System.out.println("Challenge is: " + challenge);
+        BigInteger masterNonce = makeChallenge();
+        
         for(Nodo node: nodes){
-            Block b = new Block(data, previousHash, challenge);
+            Block b = new Block(data, previousHash, masterNonce);
             node.setMiningBlock(b);
         }
     }
     
-    public Block decideWinner(){
-        Block winner = null;
+    public Nodo decideWinner(){
+        Nodo winnerNode = null;
+        Nodo maxNode = nodes[0];
         Block max = nodes[0].getMiner().getBlock();
-        int maxSize = 0;
+        BigInteger maxSize = new BigInteger("0");
         for(int i = 1; i < nodes.length; i++){
             Block b = nodes[i].getMiner().getBlock();
-            int bSize = StringUtil.stringSize(b.hash);
+            BigInteger bSize = StringUtil.stringSize(b.hash);
             maxSize = StringUtil.stringSize(max.hash);
-            if(bSize > maxSize){
+            if(bSize.compareTo(maxSize) > 0){
                 max = b;
                 maxSize = bSize;
+                maxNode = nodes[i];
             }
         }//found max value
-        System.out.println("max size is: " + maxSize);
-        if(maxSize > nodes[0].challenge){
-            winner = max;
-            System.out.println("Winner is: " + winner.hash);
+
+        if(maxSize.compareTo(nodes[0].challenge) > 0){
+            winnerNode = maxNode;
+            System.out.println("Winner is: " + winnerNode.getMiner().getId());
         }
-        return winner;
+        return winnerNode;
     }
 }

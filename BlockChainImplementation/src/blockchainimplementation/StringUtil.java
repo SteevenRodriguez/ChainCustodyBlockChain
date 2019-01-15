@@ -9,7 +9,9 @@ package blockchainimplementation;
  *
  * @author steevenrodriguez
  */
+import java.math.BigInteger;
 import java.security.MessageDigest;
+import java.security.SecureRandom;
 
 public class StringUtil {
     //Applies Sha256 to a string and returns the result. 
@@ -36,17 +38,21 @@ public class StringUtil {
      * @param s
      * @return Size of string
      */
-    public static int stringSize(String s){
+    /*public static int stringSize(String s){
         int size = 0;
         for(int i = 0; i < s.length(); i++){
             size += charNum(s.charAt(i));
         }
         return size;
+    }*/
+    
+    public static BigInteger stringSize(String s){
+        BigInteger size = new BigInteger(s, 16);
+        return size;
     }
     
-    
-    
-    public static int charNum(char c){
-        return (int) c;
+    public static BigInteger random(){
+        BigInteger sn = new BigInteger(32, new SecureRandom());
+        return sn;
     }
 }

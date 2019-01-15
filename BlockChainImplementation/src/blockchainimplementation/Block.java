@@ -8,6 +8,7 @@ package blockchainimplementation;
  *
  * @author steevenrodriguez
  */
+import java.math.BigInteger;
 import java.util.Date;
 
 public class Block {
@@ -16,22 +17,21 @@ public class Block {
     public String previousHash;
     private String data; // Cualquier objeto
     private long timeStamp;
-    private long masterNonce;
-    private long nonce;
-    
+    private BigInteger masterNonce;
+    private BigInteger nonce;
     private static int MIN = 1;
-    private static int MAX = 1000000;
+    private static int MAX = 10000;
     //Block Constructor.
-    public Block(String data, String previousHash, long masterNonce) {
+    public Block(String data, String previousHash, BigInteger masterNonce) {
         this.data = data;
         this.previousHash = previousHash;
         this.timeStamp = new Date().getTime();
-        this.nonce = (long)(Math.random()* (MAX - MIN) + MIN);
+        this.nonce = StringUtil.random();
         this.masterNonce = masterNonce;
-        this.hash = calculateHash(nonce);
+        this.hash = calculateHashWithoutNonce();
     }
 
-    public String calculateHash(long nonce) {
+    public String calculateHash(BigInteger nonce) {
         String calculatedhash = StringUtil.applySha256(
                 previousHash + timeStamp + data + masterNonce + nonce);
         return calculatedhash;
@@ -44,6 +44,12 @@ public class Block {
         return calculatedhash;
 
     }
+    
+    public String calculateHashWithoutNonce(){
+        String calculatedhash = StringUtil.applySha256(
+                previousHash + timeStamp + data + masterNonce);
+        return calculatedhash;
+    }
 
     public String getHash() {
         return hash;
@@ -53,35 +59,37 @@ public class Block {
         this.hash = hash;
     }
 
-    public long getNonce() {
+    public BigInteger getNonce() {
         return nonce;
     }
 
-    public void setNonce(long nonce) {
+    public void setNonce(BigInteger nonce) {
         this.nonce = nonce;
     }
 
-    public long getMasterNonce() {
+    public BigInteger getMasterNonce() {
         return masterNonce;
     }
     
-    public int mineBlock() {
-        int currentHashSize = StringUtil.stringSize(hash);
+    public BigInteger mineBlock() {
+        BigInteger one = new BigInteger("1");
+        BigInteger currentHashSize = StringUtil.stringSize(hash);
+        BigInteger tempHashSize;
+        int vecesSupera = 0;
         long start = System.currentTimeMillis();
         long now = start;
-        long tempNonce = nonce;
-        while(now - start < 60000){
-            tempNonce++;        
-            String tempHash = calculateHash(tempNonce);
-            int tempHashSize = StringUtil.stringSize(tempHash);
-            if(currentHashSize < tempHashSize){
+        BigInteger tempNonce = nonce;
+        while(now - start < 60000){        
+            String tempHash = calculateHash(tempNonce.add(one));
+            tempHashSize = StringUtil.stringSize(tempHash);
+            if(currentHashSize.compareTo(tempHashSize) < 0){
                 currentHashSize = tempHashSize;
                 hash = tempHash;
                 nonce = tempNonce;
             }
             now = System.currentTimeMillis();
         }
-        System.out.println(String.format("Block Mined!\nHash: %s\nHash Size: %d", hash, currentHashSize));
+        
         return currentHashSize;
     }
         

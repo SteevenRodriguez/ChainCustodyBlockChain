@@ -33,7 +33,7 @@ public class Network {
         startThreads();
         waitThreads();
         
-        Block b = pNode.decideWinner();
+        Nodo b = pNode.decideWinner();
         int tries = 1;
         while(b == null){
             tries++;
@@ -43,11 +43,11 @@ public class Network {
             b = pNode.decideWinner();
         }
         for(Nodo node: nodes){
-            node.receiveWinner(b);
+            node.receiveWinner(b.getMiner().getBlock());
         }
         long end = System.currentTimeMillis();
         System.out.println("Tiempo pasado: " + (end-start));
-        pw.println(String.format("%d,%d", nodes.length, tries));
+        pw.println(String.format("%d,%d,%d", nodes.length, tries,b.getMiner().getId()));
         pw.close();
         fw.close();
     }

@@ -5,15 +5,18 @@
  */
 package blockchainimplementation;
 
+import java.math.BigInteger;
+
 /**
  *
  * @author johnny
  */
 public class BlockMiner implements Runnable{
     private Block block;
+    private int id;
     
-    public BlockMiner(){
-        
+    public BlockMiner(int id){
+        this.id = id;
     }
     
     public BlockMiner(Block block){
@@ -28,11 +31,14 @@ public class BlockMiner implements Runnable{
         return block;
     }
     
-    
+    public int getId(){
+        return id;
+    }
 
     @Override
     public void run() {
-        block.mineBlock();
+        BigInteger b = block.mineBlock();
+        System.out.println(String.format("Block Mined!\nHash: %s\nNodeID: %d", block.hash, id));
     }
     
     

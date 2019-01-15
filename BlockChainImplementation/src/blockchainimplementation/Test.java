@@ -38,7 +38,7 @@ public class Test {
     private void prepare(){
         Nodo[] nodes = new Nodo[numNodes];
         for(int i = 0; i < nodes.length; i++){
-            nodes[i] = new Nodo();
+            nodes[i] = new Nodo(i+1);
         }
         PrincipalNode pNode = new PrincipalNode(nodes);
         network = new Network(pNode, nodes);

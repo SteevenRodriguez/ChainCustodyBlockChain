@@ -5,6 +5,7 @@
  */
 package blockchainimplementation;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 /**
@@ -14,11 +15,11 @@ import java.util.ArrayList;
 public class Nodo {
     private BlockMiner miner;
     private ArrayList<Block> blockchain;
-    public long challenge;
+    public BigInteger challenge;
     
-    public Nodo(){
+    public Nodo(int id){
         blockchain = new ArrayList<>();
-        miner = new BlockMiner();
+        miner = new BlockMiner(id);
     }
     
     public boolean isChainValid() {
@@ -47,8 +48,7 @@ public class Nodo {
         return blockchain;
     }
     public void setMiningBlock(Block block){
-        challenge = block.getMasterNonce();
-        
+        challenge = StringUtil.stringSize(block.hash);
         miner.setBlock(block);
     }
 
@@ -57,8 +57,8 @@ public class Nodo {
     }
     
     public void receiveWinner(Block winner){
-        int winnerSize = StringUtil.stringSize(winner.hash);
-        if(winnerSize > challenge){
+        BigInteger winnerSize = StringUtil.stringSize(winner.hash);
+        if(winnerSize.compareTo(challenge) > 0){
             //not altered
             blockchain.add(winner);
         }
