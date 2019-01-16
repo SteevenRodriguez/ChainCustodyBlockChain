@@ -42,14 +42,19 @@ public class Network {
             waitThreads();
             b = pNode.decideWinner();
         }
-        for(Nodo node: nodes){
-            node.receiveWinner(b.getMiner().getBlock());
+        if(b != null){
+            for(Nodo node: nodes){
+                node.receiveWinner(b.getMiner().getBlock());
+            }
+        
+            long end = System.currentTimeMillis();
+            System.out.println("Tiempo pasado: " + (end-start));
+            pw.println(String.format("%d,%d,%d", nodes.length, tries,b.getMiner().getId()));
+            pw.close();
+            fw.close();
+        }else{
+            pw.println(String.format("%d,%d,%d", nodes.length, tries,0));
         }
-        long end = System.currentTimeMillis();
-        System.out.println("Tiempo pasado: " + (end-start));
-        pw.println(String.format("%d,%d,%d", nodes.length, tries,b.getMiner().getId()));
-        pw.close();
-        fw.close();
     }
     
     private void prepareThreads(){
