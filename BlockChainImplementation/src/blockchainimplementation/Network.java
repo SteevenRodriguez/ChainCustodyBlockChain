@@ -50,11 +50,11 @@ public class Network {
             long end = System.currentTimeMillis();
             System.out.println("Tiempo pasado: " + (end-start));
             pw.println(String.format("%d,%d,%d", nodes.length, tries,b.getMiner().getId()));
-            pw.close();
-            fw.close();
         }else{
             pw.println(String.format("%d,%d,%d", nodes.length, tries,0));
         }
+        pw.close();
+        fw.close();
     }
     
     private void prepareThreads(){

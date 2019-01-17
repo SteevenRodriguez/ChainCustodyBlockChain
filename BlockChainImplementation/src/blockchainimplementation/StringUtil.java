@@ -55,4 +55,9 @@ public class StringUtil {
         BigInteger sn = new BigInteger(32, new SecureRandom());
         return sn;
     }
+    
+    public static String randomHex(){
+        BigInteger sn = new BigInteger(256, new SecureRandom());
+        return sn.toString(16);
+    }
 }
