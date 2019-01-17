@@ -78,8 +78,9 @@ public class Block {
         long start = System.currentTimeMillis();
         long now = start;
         BigInteger tempNonce = nonce;
-        while(now - start < 60000){        
-            String tempHash = calculateHash(tempNonce.add(one));
+        while(now - start < 60000){
+            tempNonce = tempNonce.add(one);
+            String tempHash = calculateHash(tempNonce);
             tempHashSize = StringUtil.stringSize(tempHash);
             if(currentHashSize.compareTo(tempHashSize) < 0){
                 currentHashSize = tempHashSize;
