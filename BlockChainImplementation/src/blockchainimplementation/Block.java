@@ -19,6 +19,7 @@ public class Block {
     private long timeStamp;
     private BigInteger masterNonce;
     private BigInteger nonce;
+    private long iterations;
     private static int MIN = 1;
     private static int MAX = 10000;
     //Block Constructor.
@@ -29,6 +30,7 @@ public class Block {
         this.nonce = StringUtil.random();
         this.masterNonce = masterNonce;
         this.hash = calculateHashWithoutNonce();
+        this.iterations = 0;
     }
 
     public String calculateHash(BigInteger nonce) {
@@ -70,8 +72,16 @@ public class Block {
     public BigInteger getMasterNonce() {
         return masterNonce;
     }
+
+    public long getIterations() {
+        return iterations;
+    }
+
+    public void setIterations(long iterations) {
+        this.iterations = iterations;
+    }
     
-    public BigInteger mineBlock() {
+    public BigInteger mineBlock(long threshold) {
         BigInteger one = new BigInteger("1");
         BigInteger currentHashSize = StringUtil.stringSize(hash);
         BigInteger tempHashSize;
@@ -79,6 +89,10 @@ public class Block {
         long now = start;
         BigInteger tempNonce = nonce;
         while(now - start < 60000){
+            iterations++;
+            now = System.currentTimeMillis();
+            if (iterations >= threshold)
+                continue;
             tempNonce = tempNonce.add(one);
             String tempHash = calculateHash(tempNonce);
             tempHashSize = StringUtil.stringSize(tempHash);
@@ -87,8 +101,8 @@ public class Block {
                 hash = tempHash;
                 nonce = tempNonce;
             }
-            now = System.currentTimeMillis();
         }
+        System.out.println(String.format("ITERACIONES REALIZADAS: %d", iterations));
         
         return currentHashSize;
     }

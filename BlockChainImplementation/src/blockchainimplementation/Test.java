@@ -5,7 +5,12 @@
  */
 package blockchainimplementation;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -37,12 +42,31 @@ public class Test {
     
     private void prepare(){
         Nodo[] nodes = new Nodo[numNodes];
-        for(int i = 0; i < nodes.length; i++){
-            nodes[i] = new Nodo(i+1);
+        long threshold = getThreshold();
+        nodes[0] = new Nodo(1, threshold/3);
+        for(int i = 1; i < nodes.length; i++){
+            nodes[i] = new Nodo(i+1, threshold);
         }
         PrincipalNode pNode = new PrincipalNode(nodes);
         network = new Network(pNode, nodes);
         
+    }
+    
+    private long getThreshold() {
+        long threshol = 7000000;
+        try {
+            Scanner scan = new Scanner(new File("process_means.csv"));
+            while (scan.hasNext()) {
+                String[] line = scan.nextLine().split(",");
+                if (Integer.parseInt(line[0]) == numNodes) {
+                    return (long)Double.parseDouble(line[1]);
+                }
+            }
+            
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return threshol;
     }
     /*
     public BlockMiner[] getMiners(){

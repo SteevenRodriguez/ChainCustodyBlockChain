@@ -22,6 +22,11 @@ public class Nodo {
         miner = new BlockMiner(id);
     }
     
+    public Nodo(int id, long threshold){
+        blockchain = new ArrayList<>();
+        miner = new BlockMiner(id, threshold);
+    }
+    
     public boolean isChainValid() {
 	Block currentBlock; 
 	Block previousBlock;

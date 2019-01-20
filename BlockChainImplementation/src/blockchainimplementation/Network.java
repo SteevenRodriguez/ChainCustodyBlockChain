@@ -26,31 +26,32 @@ public class Network {
     
     public void init(String data, String previousHash) throws IOException{
         pNode.sendBlock(data, previousHash);
-        FileWriter fw = new FileWriter("results2.csv", true);
+        FileWriter fw = new FileWriter("low_node_2_5.csv", true);
         PrintWriter pw = new PrintWriter(fw);
         prepareThreads();
         long start = System.currentTimeMillis();
         startThreads();
         waitThreads();
         
+//        double average_calcs = getAverageCalcs();
+        
         Nodo b = pNode.decideWinner();
         int tries = 1;
-        while(b == null && tries < 10){
+        while(b == null && tries < 10) {
             tries++;
             prepareThreads();
             startThreads();
             waitThreads();
             b = pNode.decideWinner();
         }
-        if(b != null){
-            for(Nodo node: nodes){
+        if (b != null) {
+            for(Nodo node: nodes) {
                 node.receiveWinner(b.getMiner().getBlock());
             }
-        
             long end = System.currentTimeMillis();
             System.out.println("Tiempo pasado: " + (end-start));
             pw.println(String.format("%d,%d,%d", nodes.length, tries,b.getMiner().getId()));
-        }else{
+        } else {
             pw.println(String.format("%d,%d,%d", nodes.length, tries,0));
         }
         pw.close();
@@ -61,6 +62,14 @@ public class Network {
         for(int i = 0; i < nodes.length; i++){
             threads[i] = nodes[i].mineBlockThread();
         }
+    }
+    
+    private double getAverageCalcs() {
+        double calcs = 0;
+        for (Nodo node : nodes) {
+            calcs += node.getMiner().getBlock().getIterations();
+        }
+        return calcs/nodes.length;
     }
     
     private void startThreads(){

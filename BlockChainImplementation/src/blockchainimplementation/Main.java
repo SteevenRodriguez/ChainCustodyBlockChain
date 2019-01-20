@@ -13,8 +13,8 @@ public class Main {
      */
     public static void main(String[] args) throws IOException {
         Test test = null;
-        for(int numNodes = 2; numNodes < 5; numNodes++){
-            for(int times = 0; times < 50; times++){
+        for(int numNodes = 2; numNodes < 6; numNodes++){
+            for(int times = 0; times < 100; times++){
                 System.out.println("INTENTO " + (times+1) +" CON " + numNodes + " NODOS");
                 test = new Test(numNodes, "Random Data", StringUtil.randomHex());
                 test.runTest();

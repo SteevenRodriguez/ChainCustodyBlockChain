@@ -14,9 +14,16 @@ import java.math.BigInteger;
 public class BlockMiner implements Runnable{
     private Block block;
     private int id;
+    private long threshold;
     
     public BlockMiner(int id){
         this.id = id;
+        this.threshold = 0;
+    }
+    
+    public BlockMiner(int id, long threshol){
+        this.id = id;
+        this.threshold = threshol;
     }
     
     public BlockMiner(Block block){
@@ -37,7 +44,7 @@ public class BlockMiner implements Runnable{
 
     @Override
     public void run() {
-        BigInteger b = block.mineBlock();
+        BigInteger b = block.mineBlock(threshold);
         System.out.println(String.format("Block Mined!\nHash: %s\nNodeID: %d", block.hash, id));
     }
     
